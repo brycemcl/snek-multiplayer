@@ -9,6 +9,7 @@ const connect = function () {
   conn.on("connect", () => {
     console.log('Connected to game server');
     conn.write("Name: BDM");
+    // conn.write("Move: up");
   });
   conn.on("data", (data) => {
     console.log(data);
