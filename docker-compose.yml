@@ -1,0 +1,15 @@
+version: "3.4"
+
+services:
+  snekjs:
+    image: snekjs
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - 50541:50541
+    stdin_open: true
+    tty: true
+    command: "/bin/sh"
