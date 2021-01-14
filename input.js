@@ -7,6 +7,7 @@ const handleUserInput = function () {
   return stdin;
 };
 
+let currentSay = "";
 let currentDirection = "";
 const input = handleUserInput();
 
@@ -23,12 +24,21 @@ input.on('data', (key) => {
     currentDirection = "Move: left";
   } else if (key === "d" && currentDirection !== "Move: left") {
     currentDirection = "Move: right";
+  } else if (key === "h") {
+    currentSay = "Say: Hello";
   }
 });;
 
 const setupInput = (conn) => {
+  const interval = 120;
   setInterval(() => {
     conn.write(currentDirection);
-  }, 60);
+    if (currentSay) {
+      setTimeout(() => {
+        conn.write(currentSay);
+        currentSay = "";
+      }, interval / 2);
+    }
+  }, interval);
 };
 module.exports = { setupInput };
