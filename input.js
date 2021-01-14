@@ -1,4 +1,4 @@
-
+const { INTERVAL, GREETING } = require('./constants');
 const handleUserInput = function () {
   const stdin = process.stdin;
   stdin.setRawMode(true);
@@ -25,20 +25,19 @@ input.on('data', (key) => {
   } else if (key === "d" && currentDirection !== "Move: left") {
     currentDirection = "Move: right";
   } else if (key === "h") {
-    currentSay = "Say: Hello";
+    currentSay = `Say: ${GREETING}`;
   }
 });;
 
 const setupInput = (conn) => {
-  const interval = 120;
   setInterval(() => {
     conn.write(currentDirection);
     if (currentSay) {
       setTimeout(() => {
         conn.write(currentSay);
         currentSay = "";
-      }, interval / 2);
+      }, INTERVAL / 2);
     }
-  }, interval);
+  }, INTERVAL);
 };
 module.exports = { setupInput };
