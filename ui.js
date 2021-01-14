@@ -3,21 +3,21 @@ const { ask } = require('./ask');
 let commandMode = true;
 let conn;
 
-const beginCommandMode = function() {
+const beginCommandMode = function () {
   commandMode = true;
   const stdin = process.stdin;
   stdin.setRawMode(true);
   stdin.setEncoding('utf8');
   stdin.resume();
   return stdin;
-}
+};
 
-const send = function(msg) {
+const send = function (msg) {
   console.log('sending: ', msg);
   conn.write(msg);
-}
+};
 
-const handleMovement = function(key) {
+const handleMovement = function (key) {
   if (key === 'w') {
     send('Move: up');
   } else if (key === 'a') {
@@ -27,9 +27,9 @@ const handleMovement = function(key) {
   } else if (key === 'd') {
     send('Move: right');
   }
-}
+};
 
-const handleManualInput = function() {
+const handleManualInput = function () {
   commandMode = false;
   ask('Raw Command', (cmd) => {
     console.log('sending: ', cmd);
@@ -37,11 +37,11 @@ const handleManualInput = function() {
     beginCommandMode();
     commandMode = true;
   });
-}
+};
 
-const handleUserInput = function( key ) {
+const setupInput = function (key) {
   if (!commandMode) return;
-  if ( key === '\u0003' ) {
+  if (key === '\u0003') {
     // ctrl-c ( end of text )
     process.exit();
   } else if (key === 'w' || key === 'a' || key === 's' || key === 'd') {
@@ -51,12 +51,12 @@ const handleUserInput = function( key ) {
   } else if (key === 'q') {
     conn.end();
   }
-}
+};
 
-const run = function(connection) {
+const run = function (connection) {
   const stdin = beginCommandMode();
   conn = connection;
-  stdin.on('data', handleUserInput);
-} 
+  stdin.on('data', setupInput);
+};
 
 module.exports = { run };
